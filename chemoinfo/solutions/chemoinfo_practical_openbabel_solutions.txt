@@ -1,5 +1,6 @@
 
-Birkbeck, MSc Bioinformatics with Systems BiologySpring 2018Answers to chemoinformatics practical 2 (openBabel)===================================================
+Birkbeck, MSc Bioinformatics with Systems BiologySpring 2019 
+Answers to chemoinformatics practical (openBabel)
 
 To reveal warnings run babel with:
 ---errorlevel 5
