@@ -1,0 +1,53 @@
+
+Birkbeck, MSc Bioinformatics with Systems BiologySpring 2018Answers to chemoinformatics practical 2 (openBabel)===================================================
+
+To reveal warnings run babel with:
+---errorlevel 5
+(this is not necessary for answering the questions but allows you to check what the reported warnings are)
+
+
+To add a title and hydrogens at pH 7.4 (assuming you have a SMILES string in the file viagra.smi and you
+want to produce an SDF formatted file as output):
+
+babel -ismi viagra.smi -osdf viagra.sdf -p 7.4 --title Viagra
+
+
+Producing a 3D structure from sdf with no coordinates in it doesn't seem to work (at least when I tried it):
+obgen viagra.sdf > viagra3d.sdf
+
+However, the 3d generation will work if done directly from the SMILES string:
+obgen viagra.smi > viagra3d.mol
+
+
+
+To add hydrogens to an existing 3d mol file:
+babel -p 7.4 -imol viagra3d.mol -osdf viagra3d.sdf
+
+
+
+To search an SDF formatted file with a SMARTS pattern (make sure the pattern is within quotes):
+obgrep 'C1C2C(CCC1)CCC3C2CCC4C3CCC4' 1equ_ligonly_edited.sdf > 1equ_steroids.sdf
+
+(this particular pattern describes the steroid rings in the wikipedia page for “steroid” and returns
+6 hits back).
+You can try alternative patterns e.g.
+
+obgrep 'C4C1C(=CCC2C1CCC3C2CCC3)CCC4' 1equ_ligonly_edited.sdf > 1equ_steroids.sdf
+
+(which returns only 3 hits - you  get a different number if you
+are using a different pattern)
+
+
+
+To split up the file of hits so that they can be visualised better in Chimera:
+babel -m -isdf 1equ_steroids.sdf -osdf 1equ_steroids
+
+
+To calculate properties of the molecule in the SDF file: 
+obprop 1equ_ligonly_edited.sdf
+
+
+
+To superimpose steroid 2 on steroid 1 using a SMARTS pattern (in this case just the 5-member
+ring):
+obfit 'C1CCCC1' 1equ_steroids1.sdf 1equ_steroids2.sdf > 1equ_steroids2_on_1.sdf
