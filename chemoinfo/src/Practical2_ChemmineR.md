@@ -14,7 +14,7 @@ output:
 
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. 
 
 ## ChemmineR: Cheminformatics toolkit for R
 Documentation for ChemmineR can be found here: 
@@ -72,7 +72,7 @@ view(sdf) #check it worked
 ##                             Molecule_Name 
 ##                                  "viagra" 
 ##                                    Source 
-##                  " OpenBabel02181913222D" 
+##                  " OpenBabel03061911242D" 
 ##                                   Comment 
 ##                                        "" 
 ##                               Counts_Line 
@@ -109,18 +109,19 @@ class(sdf) #sdf is of type SDFset
 ```
 
 ```r
-write.SDF(sdf[1], file="output/viagra.sdf") 
+write.SDF(sdf[[1]], file="output/viagra.sdf") 
 
 # If ChemmineOB has been installed and loaded successfully, many open babel
 # functions can be used
 # Example 1: generate 3D coordinates
-sdf3D = generate3DCoords(sdf[1])
+sdf3D = generate3DCoords(sdf)
+write.SDF(sdf3D[[1]], file="output/viagra3D.sdf") 
 # (if you want to see the result in proper 3D, open it in Chimera)
 
 # Example 2: calculate a small subset of properties
 # a description of properties can be found on the open babel website:
 # http://openbabel.org/wiki/Obprop
-props <- propOB(sdf[1])
+props <- propOB(sdf)
 # (the result is a data frame with some basic properties calculated including
 # an InChI code and logP)
 props$logP
@@ -405,7 +406,7 @@ MW(sdfset[1:5], addH=FALSE)
 hist(MW(sdfset, addH=FALSE))
 ```
 
-![](../output/figsload_sdf_and_calculate_properties-1.png)<!-- -->
+![](../output/figs/load_sdf_and_calculate_properties-1.png)<!-- -->
 
 ```r
 # There are a number of functions to carry out basic calculations on SDFset
@@ -417,7 +418,7 @@ propma <- atomcountMA(sdfset, addH=FALSE)
 boxplot(propma, main="Atom Frequency")
 ```
 
-![](../output/figsload_sdf_and_calculate_properties-2.png)<!-- -->
+![](../output/figs/load_sdf_and_calculate_properties-2.png)<!-- -->
 
 ```r
 # Below we will extract the docking score for each compound and check
@@ -428,6 +429,15 @@ boxplot(propma, main="Atom Frequency")
 # to extract only the "r_i_docking_score" entry from each data block
 # The sapply function will return a vector of the docking scores
 ds<- as.numeric(sapply(datablock(sdfset), '[[', "r_i_docking_score"))
+# check we got all of them (length should be 800)
+length(ds)
+```
+
+```
+## [1] 800
+```
+
+```r
 # we can also assign the proper molecule names to this vector
 names(ds) <- sdfid(sdfset)
 # check it worked
@@ -445,7 +455,7 @@ mw <- MW(sdfset, addH=FALSE)
 plot(mw, ds, xlab="molecular weight", ylab="docking score")
 ```
 
-![](../output/figsload_sdf_and_calculate_properties-3.png)<!-- -->
+![](../output/figs/load_sdf_and_calculate_properties-3.png)<!-- -->
 
 ```r
 # do a correlation test
@@ -479,9 +489,11 @@ searches. It can also use open babel's functionality to do SMARTS searches.
 library(fmcsR) 
 
 # We will look for a steroid skeleton using a SMARTS search
+# (you can visualise the SMILES below using an online translator such as:
+# http://www.openmolecules.org/name2structure.html )
 smi_query <- "C1C2C(CCC1)CCC3C2CCC4C3CCC4"
 # Remember: SMILES strings are valid SMARTS patterns
-steroids<- smartsSearchOB(sdfset,"C1C2C(CCC1)CCC3C2CCC4C3CCC4",uniqueMatches=FALSE)
+steroids<- smartsSearchOB(sdfset,"C1C2C(CCC1)CCC3C2CCC4C3CCC4")
 # you should get back 6 hits
 table(steroids)
 ```
@@ -531,7 +543,7 @@ length(hits)
 plot(hits[1:4], regenCoords=TRUE, print=FALSE) # Plots structures to R graphics device
 ```
 
-![](../output/figsMCS_search-1.png)<!-- -->![](../output/figsMCS_search-2.png)<!-- -->
+![](../output/figs/MCS_search-1.png)<!-- -->![](../output/figs/MCS_search-2.png)<!-- -->
 
 ```r
 # The following should have worked but it's broken at the moment - the idea is 
@@ -542,16 +554,17 @@ sdf.visualize(hits)
 ```
 
 ```
-## [1] "http://chemmine.ucr.edu/ChemmineR/showJob/7906cac3-5719-45c4-a9fd-c12055c82c3c"
+## [1] "http://chemmine.ucr.edu/ChemmineR/showJob/dc09552d-d229-432f-8154-4f9ce35db25f"
 ```
 
 ```r
 # Finally, we can extract the MCS from a pairwise comparison and visualise it; # we select here two compounds from the sdfset as the result looks better
 # the MCS will be coloured red in the molecular diagrams
+# You may need to resize the plotting window to see the structures better.
 plotMCS(fmcs(sdfset[[10]], sdfset[[100]], au=0, bu=0, matching.mode="aromatic")) 
 ```
 
-![](../output/figsMCS_search-3.png)<!-- -->
+![](../output/figs/MCS_search-3.png)<!-- -->
 
 ### Generating and comparing fingerprints
 Finally, we will look at fingerprint generation and comparison using ChemmineR
@@ -566,12 +579,12 @@ view(fp2set[1:2])
 
 ```
 ## $CMP1
-## An instance of "FP" of type "unknown-6562"
+## An instance of "FP" of type "unknown-5629"
 ## <<fingerprint>>
 ## 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ... length: 1024 
 ## 
 ## $CMP2
-## An instance of "FP" of type "unknown-6450"
+## An instance of "FP" of type "unknown-4585"
 ## <<fingerprint>>
 ## 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ... length: 1024
 ```
@@ -592,7 +605,7 @@ fpSim.out
 plot(sdfset[names(fpSim.out)], regenCoords=TRUE, print=FALSE)
 ```
 
-![](../output/figsfingerprints-1.png)<!-- -->
+![](../output/figs/fingerprints-1.png)<!-- -->
 
 ```r
 # Next, we compute a whole matrix of similarities (all against all)
@@ -608,6 +621,15 @@ simMA["CMP1", "CMP10"]
 
 ```r
 # or plot the distribuion of all similarity values
+dev.off()
+```
+
+```
+## null device 
+##           1
+```
+
+```r
 hist(simMA)
 # We can also use R's clustering functions on the dissimilarity matrix
 # below, we do hierarchical clustering using Ward's method agglomeration
@@ -633,13 +655,6 @@ groups[groups == 1]
 ```r
 # plot the structures of 4 compounds from clusters 2 and 3
 plot(sdfset[names(groups[groups==2])[1:4]], regenCoords=TRUE, print=FALSE)
-```
-
-![](../output/figsfingerprints-2.png)<!-- -->![](../output/figsfingerprints-3.png)<!-- -->
-
-```r
 plot(sdfset[names(groups[groups==3])[1:4]], regenCoords=TRUE, print=FALSE)
 ```
-
-![](../output/figsfingerprints-4.png)<!-- -->
 

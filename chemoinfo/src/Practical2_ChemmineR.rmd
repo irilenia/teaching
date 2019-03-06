@@ -14,14 +14,14 @@ opts_chunk$set(echo = TRUE)
 #set the root directory to the project directory so all paths 
 #that follow will be relative to that.
 opts_knit$set(root.dir = "../")
-opts_chunk$set(fig.path = "../output/figs")
+opts_chunk$set(fig.path = "../output/figs/")
 ```
 
 ## R Markdown
 
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. 
 
 ## ChemmineR: Cheminformatics toolkit for R
 Documentation for ChemmineR can be found here: 
@@ -69,18 +69,19 @@ names(smi_string) <- c("viagra")
 sdf <- smiles2sdf(smi_string)
 view(sdf) #check it worked
 class(sdf) #sdf is of type SDFset
-write.SDF(sdf[1], file="output/viagra.sdf") 
+write.SDF(sdf[[1]], file="output/viagra.sdf") 
 
 # If ChemmineOB has been installed and loaded successfully, many open babel
 # functions can be used
 # Example 1: generate 3D coordinates
-sdf3D = generate3DCoords(sdf[1])
+sdf3D = generate3DCoords(sdf)
+write.SDF(sdf3D[[1]], file="output/viagra3D.sdf") 
 # (if you want to see the result in proper 3D, open it in Chimera)
 
 # Example 2: calculate a small subset of properties
 # a description of properties can be found on the open babel website:
 # http://openbabel.org/wiki/Obprop
-props <- propOB(sdf[1])
+props <- propOB(sdf)
 # (the result is a data frame with some basic properties calculated including
 # an InChI code and logP)
 props$logP
@@ -142,6 +143,8 @@ boxplot(propma, main="Atom Frequency")
 # to extract only the "r_i_docking_score" entry from each data block
 # The sapply function will return a vector of the docking scores
 ds<- as.numeric(sapply(datablock(sdfset), '[[', "r_i_docking_score"))
+# check we got all of them (length should be 800)
+length(ds)
 # we can also assign the proper molecule names to this vector
 names(ds) <- sdfid(sdfset)
 # check it worked
@@ -163,9 +166,11 @@ searches. It can also use open babel's functionality to do SMARTS searches.
 library(fmcsR) 
 
 # We will look for a steroid skeleton using a SMARTS search
+# (you can visualise the SMILES below using an online translator such as:
+# http://www.openmolecules.org/name2structure.html )
 smi_query <- "C1C2C(CCC1)CCC3C2CCC4C3CCC4"
 # Remember: SMILES strings are valid SMARTS patterns
-steroids<- smartsSearchOB(sdfset,"C1C2C(CCC1)CCC3C2CCC4C3CCC4",uniqueMatches=FALSE)
+steroids<- smartsSearchOB(sdfset,"C1C2C(CCC1)CCC3C2CCC4C3CCC4")
 # you should get back 6 hits
 table(steroids)
 # check which molecules were found to contain this skeleton
@@ -198,6 +203,7 @@ sdf.visualize(hits)
 
 # Finally, we can extract the MCS from a pairwise comparison and visualise it; # we select here two compounds from the sdfset as the result looks better
 # the MCS will be coloured red in the molecular diagrams
+# You may need to resize the plotting window to see the structures better.
 plotMCS(fmcs(sdfset[[10]], sdfset[[100]], au=0, bu=0, matching.mode="aromatic")) 
 
 
@@ -223,6 +229,7 @@ simMA <- sapply(cid(fp2set), function(x) fpSim(x=fp2set[x], fp2set, sorted=FALSE
 # we can check the similarity value of any two compounds in the matrix
 simMA["CMP1", "CMP10"]
 # or plot the distribuion of all similarity values
+dev.off()
 hist(simMA)
 # We can also use R's clustering functions on the dissimilarity matrix
 # below, we do hierarchical clustering using Ward's method agglomeration
