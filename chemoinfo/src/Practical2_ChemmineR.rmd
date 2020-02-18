@@ -1,7 +1,7 @@
 ---
 title: "Practical_Chemmine.rmd"
 author: "IN"
-date: "15 February 2019"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: 
   html_document:
     keep_md: true
@@ -29,9 +29,9 @@ Documentation for ChemmineR can be found here:
 This practical demonstrates a few basic functions and essentially repeats some of the exercises in the OpenBabel practical.
 
 The directories for this practical are organised as follows:
-+ src : contains this markdown file
-+ data: contains any external input files
-+ output: contains the files written out by this script
+- src : contains this markdown file
+- data: contains any external input files
+- output: contains the files written out by this script
 
 ### Installation and loading of the package (you only need to install once in a session)
 ```{r ChemmmineR installation}
@@ -42,9 +42,9 @@ The directories for this practical are organised as follows:
 # functions
 
 # Remove the comments from the next couple of lines to install ChemmineOB and ChemmineR
-# if (!requireNamespace("BiocManager", quietly=TRUE))
-#     install.packages("BiocManager")
-# BiocManager::install("ChemmineOB", version = "3.8")
+# if (!requireNamespace("BiocManager", quietly = TRUE))
+#    install.packages("BiocManager")
+# BiocManager::install("ChemmineOB")
 library("ChemmineOB")
 # BiocManager::install("ChemmineR")
 # Once installed, the package needs to be loaded 
@@ -195,10 +195,10 @@ length(hits)
 # check the first 4 hits
 plot(hits[1:4], regenCoords=TRUE, print=FALSE) # Plots structures to R graphics device
 
-# The following should have worked but it's broken at the moment - the idea is 
-# that it sends the results to the online viewer of Chemmine and this displays 
-# all the molecules propely (opens on a browser window). 
-# However, it's currently not working! 
+# The R graphics representation of these compounds is not that great but hits
+# can be visualised instead on the online viewer of Chemmine using
+# the following command (which opens on a browser window). 
+
 sdf.visualize(hits)
 
 # Finally, we can extract the MCS from a pairwise comparison and visualise it; # we select here two compounds from the sdfset as the result looks better
@@ -217,11 +217,13 @@ Finally, we will look at fingerprint generation and comparison using ChemmineR
 fp2set <- fingerprintOB(sdfset, "FP2")
 # check the first two entries
 view(fp2set[1:2])
-# compare all ligands to the first one
+# compare all ligands to the first one (and return only the top 4)
 fpSim.out <- fpSim(fp2set[1], fp2set, method="Tanimoto", cutoff=0.4, top=4) 
 fpSim.out
 # plot the results
 plot(sdfset[names(fpSim.out)], regenCoords=TRUE, print=FALSE)
+# or for better graphics:
+sdf.visualize(sdfset[names(fpSim.out)])
 
 # Next, we compute a whole matrix of similarities (all against all)
 # for the same set of molecules
@@ -242,6 +244,9 @@ groups[groups == 1]
 # plot the structures of 4 compounds from clusters 2 and 3
 plot(sdfset[names(groups[groups==2])[1:4]], regenCoords=TRUE, print=FALSE)
 plot(sdfset[names(groups[groups==3])[1:4]], regenCoords=TRUE, print=FALSE)
+# or visualising them online:
+sdf.visualize(sdfset[names(groups[groups==2])[1:4]])
+sdf.visualize(sdfset[names(groups[groups==3])[1:4]])
 
 ```
 

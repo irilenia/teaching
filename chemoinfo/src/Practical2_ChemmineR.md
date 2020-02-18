@@ -1,7 +1,7 @@
 ---
 title: "Practical_Chemmine.rmd"
 author: "IN"
-date: "15 February 2019"
+date: "18 February, 2020"
 output: 
   html_document:
     keep_md: true
@@ -22,9 +22,9 @@ Documentation for ChemmineR can be found here:
 This practical demonstrates a few basic functions and essentially repeats some of the exercises in the OpenBabel practical.
 
 The directories for this practical are organised as follows:
-+ src : contains this markdown file
-+ data: contains any external input files
-+ output: contains the files written out by this script
+- src : contains this markdown file
+- data: contains any external input files
+- output: contains the files written out by this script
 
 ### Installation and loading of the package (you only need to install once in a session)
 
@@ -36,9 +36,9 @@ The directories for this practical are organised as follows:
 # functions
 
 # Remove the comments from the next couple of lines to install ChemmineOB and ChemmineR
-# if (!requireNamespace("BiocManager", quietly=TRUE))
-#     install.packages("BiocManager")
-# BiocManager::install("ChemmineOB", version = "3.8")
+# if (!requireNamespace("BiocManager", quietly = TRUE))
+#    install.packages("BiocManager")
+# BiocManager::install("ChemmineOB")
 library("ChemmineOB")
 # BiocManager::install("ChemmineR")
 # Once installed, the package needs to be loaded 
@@ -72,7 +72,7 @@ view(sdf) #check it worked
 ##                             Molecule_Name 
 ##                                  "viagra" 
 ##                                    Source 
-##                  " OpenBabel03061911242D" 
+##                  " OpenBabel02182013052D" 
 ##                                   Comment 
 ##                                        "" 
 ##                               Counts_Line 
@@ -220,74 +220,40 @@ sdfset[[1]][[4]]
 ```
 
 ```
-##                 i_ionizer_Ion_state_n 
-##                                   "0" 
-##                       i_ionizer_Tot_Q 
-##                                   "0" 
-##                 s_ionizer_Ion_centers 
-##                                    "" 
-##                   s_ionizer_Ion_types 
-##                                    "" 
-##                 s_ionizer_Ion_ctrs_in 
-##                                    "" 
-##          r_ionizer_Ionization_penalty 
-##                                   "0" 
-## r_ionizer_Ionization_penalty_charging 
-##                                   "0" 
-##  r_ionizer_Ionization_penalty_neutral 
-##                                   "0" 
-##                      s_st_Chirality_1 
-##                        "1_S_2_3_4_24" 
-##                      s_st_Chirality_2 
-##                        "4_R_8_1_7_25" 
-##                      s_st_Chirality_3 
-##                       "5_R_2_9_10_26" 
-##                      s_st_Chirality_4 
-##                       "7_S_12_4_9_29" 
-##                      s_st_Chirality_5 
-##                       "9_S_13_7_5_31" 
-##                      s_st_Chirality_6 
-##                     "11_R_16_15_6_34" 
-##                      s_st_Chirality_7 
-##                    "15_R_18_17_11_38" 
-##                      s_st_Chirality_8 
-##                    "17_S_21_20_15_39" 
-##                      s_st_Chirality_9 
-##                    "20_R_23_19_17_42" 
-##                     s_st_Chirality_10 
-##                    "19_R_16_22_20_41" 
-##        i_mmod_Serial_Number-OPLS-2005 
-##                                 "686" 
-##                      i_i_glide_lignum 
-##                                 "679" 
-##                     r_i_docking_score 
-##                            "-9.17022" 
-##                      r_i_glide_gscore 
-##                            "-9.17022" 
-##                        r_i_glide_lipo 
-##                           "-0.943931" 
-##                       r_i_glide_hbond 
-##                            "-2.53942" 
-##                       r_i_glide_metal 
-##                                   "0" 
-##                       r_i_glide_eburp 
-##                            "-1.59468" 
-##                        r_i_glide_evdw 
-##                            "-21.9679" 
-##                       r_i_glide_ecoul 
-##                            "-28.0032" 
-##                       r_i_glide_erotb 
-##                            "0.739756" 
-##                       r_i_glide_esite 
-##                            "-0.27419" 
-##                      r_i_glide_emodel 
-##                            "-81.3739" 
-##                      r_i_glide_energy 
-##                            "-49.9711" 
-##                   r_i_glide_einternal 
-##                             "12.2605" 
-##                     i_i_glide_confnum 
-##                                  "10" 
+##                 i_ionizer_Ion_state_n                       i_ionizer_Tot_Q 
+##                                   "0"                                   "0" 
+##                 s_ionizer_Ion_centers                   s_ionizer_Ion_types 
+##                                    ""                                    "" 
+##                 s_ionizer_Ion_ctrs_in          r_ionizer_Ionization_penalty 
+##                                    ""                                   "0" 
+## r_ionizer_Ionization_penalty_charging  r_ionizer_Ionization_penalty_neutral 
+##                                   "0"                                   "0" 
+##                      s_st_Chirality_1                      s_st_Chirality_2 
+##                        "1_S_2_3_4_24"                        "4_R_8_1_7_25" 
+##                      s_st_Chirality_3                      s_st_Chirality_4 
+##                       "5_R_2_9_10_26"                       "7_S_12_4_9_29" 
+##                      s_st_Chirality_5                      s_st_Chirality_6 
+##                       "9_S_13_7_5_31"                     "11_R_16_15_6_34" 
+##                      s_st_Chirality_7                      s_st_Chirality_8 
+##                    "15_R_18_17_11_38"                    "17_S_21_20_15_39" 
+##                      s_st_Chirality_9                     s_st_Chirality_10 
+##                    "20_R_23_19_17_42"                    "19_R_16_22_20_41" 
+##        i_mmod_Serial_Number-OPLS-2005                      i_i_glide_lignum 
+##                                 "686"                                 "679" 
+##                     r_i_docking_score                      r_i_glide_gscore 
+##                            "-9.17022"                            "-9.17022" 
+##                        r_i_glide_lipo                       r_i_glide_hbond 
+##                           "-0.943931"                            "-2.53942" 
+##                       r_i_glide_metal                       r_i_glide_eburp 
+##                                   "0"                            "-1.59468" 
+##                        r_i_glide_evdw                       r_i_glide_ecoul 
+##                            "-21.9679"                            "-28.0032" 
+##                       r_i_glide_erotb                       r_i_glide_esite 
+##                            "0.739756"                            "-0.27419" 
+##                      r_i_glide_emodel                      r_i_glide_energy 
+##                            "-81.3739"                            "-49.9711" 
+##                   r_i_glide_einternal                     i_i_glide_confnum 
+##                             "12.2605"                                  "10" 
 ##                     i_i_glide_posenum 
 ##                                 "757"
 ```
@@ -298,74 +264,40 @@ datablock(sdfset[[1]])
 ```
 
 ```
-##                 i_ionizer_Ion_state_n 
-##                                   "0" 
-##                       i_ionizer_Tot_Q 
-##                                   "0" 
-##                 s_ionizer_Ion_centers 
-##                                    "" 
-##                   s_ionizer_Ion_types 
-##                                    "" 
-##                 s_ionizer_Ion_ctrs_in 
-##                                    "" 
-##          r_ionizer_Ionization_penalty 
-##                                   "0" 
-## r_ionizer_Ionization_penalty_charging 
-##                                   "0" 
-##  r_ionizer_Ionization_penalty_neutral 
-##                                   "0" 
-##                      s_st_Chirality_1 
-##                        "1_S_2_3_4_24" 
-##                      s_st_Chirality_2 
-##                        "4_R_8_1_7_25" 
-##                      s_st_Chirality_3 
-##                       "5_R_2_9_10_26" 
-##                      s_st_Chirality_4 
-##                       "7_S_12_4_9_29" 
-##                      s_st_Chirality_5 
-##                       "9_S_13_7_5_31" 
-##                      s_st_Chirality_6 
-##                     "11_R_16_15_6_34" 
-##                      s_st_Chirality_7 
-##                    "15_R_18_17_11_38" 
-##                      s_st_Chirality_8 
-##                    "17_S_21_20_15_39" 
-##                      s_st_Chirality_9 
-##                    "20_R_23_19_17_42" 
-##                     s_st_Chirality_10 
-##                    "19_R_16_22_20_41" 
-##        i_mmod_Serial_Number-OPLS-2005 
-##                                 "686" 
-##                      i_i_glide_lignum 
-##                                 "679" 
-##                     r_i_docking_score 
-##                            "-9.17022" 
-##                      r_i_glide_gscore 
-##                            "-9.17022" 
-##                        r_i_glide_lipo 
-##                           "-0.943931" 
-##                       r_i_glide_hbond 
-##                            "-2.53942" 
-##                       r_i_glide_metal 
-##                                   "0" 
-##                       r_i_glide_eburp 
-##                            "-1.59468" 
-##                        r_i_glide_evdw 
-##                            "-21.9679" 
-##                       r_i_glide_ecoul 
-##                            "-28.0032" 
-##                       r_i_glide_erotb 
-##                            "0.739756" 
-##                       r_i_glide_esite 
-##                            "-0.27419" 
-##                      r_i_glide_emodel 
-##                            "-81.3739" 
-##                      r_i_glide_energy 
-##                            "-49.9711" 
-##                   r_i_glide_einternal 
-##                             "12.2605" 
-##                     i_i_glide_confnum 
-##                                  "10" 
+##                 i_ionizer_Ion_state_n                       i_ionizer_Tot_Q 
+##                                   "0"                                   "0" 
+##                 s_ionizer_Ion_centers                   s_ionizer_Ion_types 
+##                                    ""                                    "" 
+##                 s_ionizer_Ion_ctrs_in          r_ionizer_Ionization_penalty 
+##                                    ""                                   "0" 
+## r_ionizer_Ionization_penalty_charging  r_ionizer_Ionization_penalty_neutral 
+##                                   "0"                                   "0" 
+##                      s_st_Chirality_1                      s_st_Chirality_2 
+##                        "1_S_2_3_4_24"                        "4_R_8_1_7_25" 
+##                      s_st_Chirality_3                      s_st_Chirality_4 
+##                       "5_R_2_9_10_26"                       "7_S_12_4_9_29" 
+##                      s_st_Chirality_5                      s_st_Chirality_6 
+##                       "9_S_13_7_5_31"                     "11_R_16_15_6_34" 
+##                      s_st_Chirality_7                      s_st_Chirality_8 
+##                    "15_R_18_17_11_38"                    "17_S_21_20_15_39" 
+##                      s_st_Chirality_9                     s_st_Chirality_10 
+##                    "20_R_23_19_17_42"                    "19_R_16_22_20_41" 
+##        i_mmod_Serial_Number-OPLS-2005                      i_i_glide_lignum 
+##                                 "686"                                 "679" 
+##                     r_i_docking_score                      r_i_glide_gscore 
+##                            "-9.17022"                            "-9.17022" 
+##                        r_i_glide_lipo                       r_i_glide_hbond 
+##                           "-0.943931"                            "-2.53942" 
+##                       r_i_glide_metal                       r_i_glide_eburp 
+##                                   "0"                            "-1.59468" 
+##                        r_i_glide_evdw                       r_i_glide_ecoul 
+##                            "-21.9679"                            "-28.0032" 
+##                       r_i_glide_erotb                       r_i_glide_esite 
+##                            "0.739756"                            "-0.27419" 
+##                      r_i_glide_emodel                      r_i_glide_energy 
+##                            "-81.3739"                            "-49.9711" 
+##                   r_i_glide_einternal                     i_i_glide_confnum 
+##                             "12.2605"                                  "10" 
 ##                     i_i_glide_posenum 
 ##                                 "757"
 ```
@@ -546,15 +478,15 @@ plot(hits[1:4], regenCoords=TRUE, print=FALSE) # Plots structures to R graphics 
 ![](../output/figs/MCS_search-1.png)<!-- -->![](../output/figs/MCS_search-2.png)<!-- -->
 
 ```r
-# The following should have worked but it's broken at the moment - the idea is 
-# that it sends the results to the online viewer of Chemmine and this displays 
-# all the molecules propely (opens on a browser window). 
-# However, it's currently not working! 
+# The R graphics representation of these compounds is not that great but hits
+# can be visualised instead on the online viewer of Chemmine using
+# the following command (which opens on a browser window). 
+
 sdf.visualize(hits)
 ```
 
 ```
-## [1] "http://chemmine.ucr.edu/ChemmineR/showJob/dc09552d-d229-432f-8154-4f9ce35db25f"
+## [1] "http://chemmine.ucr.edu/ChemmineR/showJob/139089cf-8f06-44c2-8add-e0ee6654750f"
 ```
 
 ```r
@@ -579,18 +511,18 @@ view(fp2set[1:2])
 
 ```
 ## $CMP1
-## An instance of "FP" of type "unknown-5629"
+## An instance of "FP" of type "unknown-4670"
 ## <<fingerprint>>
 ## 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ... length: 1024 
 ## 
 ## $CMP2
-## An instance of "FP" of type "unknown-4585"
+## An instance of "FP" of type "unknown-5360"
 ## <<fingerprint>>
 ## 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ... length: 1024
 ```
 
 ```r
-# compare all ligands to the first one
+# compare all ligands to the first one (and return only the top 4)
 fpSim.out <- fpSim(fp2set[1], fp2set, method="Tanimoto", cutoff=0.4, top=4) 
 fpSim.out
 ```
@@ -606,6 +538,15 @@ plot(sdfset[names(fpSim.out)], regenCoords=TRUE, print=FALSE)
 ```
 
 ![](../output/figs/fingerprints-1.png)<!-- -->
+
+```r
+# or for better graphics:
+sdf.visualize(sdfset[names(fpSim.out)])
+```
+
+```
+## [1] "http://chemmine.ucr.edu/ChemmineR/showJob/3850de96-f9b6-44f1-8c55-2eaacf7eaa0c"
+```
 
 ```r
 # Next, we compute a whole matrix of similarities (all against all)
@@ -642,19 +583,31 @@ groups[groups == 1]
 ```
 
 ```
-##   CMP1   CMP2   CMP8  CMP12  CMP18  CMP41  CMP88  CMP91  CMP93 CMP114 
-##      1      1      1      1      1      1      1      1      1      1 
-## CMP138 CMP139 CMP148 CMP159 CMP186 CMP187 CMP203 CMP229 CMP232 CMP238 
-##      1      1      1      1      1      1      1      1      1      1 
-## CMP256 CMP261 CMP277 CMP282 CMP300 CMP384 CMP390 CMP439 CMP453 CMP551 
-##      1      1      1      1      1      1      1      1      1      1 
-## CMP792 
-##      1
+##   CMP1   CMP2   CMP8  CMP12  CMP18  CMP41  CMP88  CMP91  CMP93 CMP114 CMP138 
+##      1      1      1      1      1      1      1      1      1      1      1 
+## CMP139 CMP148 CMP159 CMP186 CMP187 CMP203 CMP229 CMP232 CMP238 CMP256 CMP261 
+##      1      1      1      1      1      1      1      1      1      1      1 
+## CMP277 CMP282 CMP300 CMP384 CMP390 CMP439 CMP453 CMP551 CMP792 
+##      1      1      1      1      1      1      1      1      1
 ```
 
 ```r
 # plot the structures of 4 compounds from clusters 2 and 3
 plot(sdfset[names(groups[groups==2])[1:4]], regenCoords=TRUE, print=FALSE)
 plot(sdfset[names(groups[groups==3])[1:4]], regenCoords=TRUE, print=FALSE)
+# or visualising them online:
+sdf.visualize(sdfset[names(groups[groups==2])[1:4]])
+```
+
+```
+## [1] "http://chemmine.ucr.edu/ChemmineR/showJob/26871416-2a2e-4fc5-a922-a44f086dccaf"
+```
+
+```r
+sdf.visualize(sdfset[names(groups[groups==3])[1:4]])
+```
+
+```
+## [1] "http://chemmine.ucr.edu/ChemmineR/showJob/de13b172-ce61-4ea0-8169-1a8f9b239c1d"
 ```
 
