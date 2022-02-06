@@ -73,24 +73,46 @@ names(smi_string) <- c("viagra")
 sdf <- smiles2sdf(smi_string)
 view(sdf) #check it worked and note that the datablock is empty as we did not append any information.
 class(sdf) #sdf is of type SDFset
+#check out the "slots" of sdf
+header(sdf)
+#or you can access a slot like this (note that you need to access first the first
+#element of this list of SDF objects before you can access the slot header):
+sdf[[1]]@header
+#note that the header itself is a vector of strings
+sdf[[1]]@header[1]
+#or use the name of the vector elements
+sdf[[1]]@header['Molecule_Name']
+#atomblock and bondblock slots are both matrices of numbers
+is.matrix(bondblock(sdf[[1]]))
+dim(bondblock(sdf[[1]]))
+
 write.SDF(sdf[[1]], file="output/viagra.sdf") 
 
 # If ChemmineOB has been installed and loaded successfully, many open babel
 # functions can be used
-# Example 1: generate 3D coordinates
+# EXAMPLE 1: generate 3D coordinates
 sdf3D <- generate3DCoords(sdf)
 view(sdf3D)
+# Check the difference between the initial coordinates block in sdf and the current one in sdf3D (third column is the z coordinate)
+atomblock(sdf[[1]])[,3]
+atomblock(sdf3D[[1]])[,3]
+
 write.SDF(sdf3D[[1]], file="output/viagra3D.sdf") 
 # (if you want to see the result in proper 3D, open it in Chimera)
 
-# Example 2: calculate a small subset of properties
+# EXAMPLE 2: calculate a small subset of properties
 # a description of properties can be found on the open babel website:
 # http://openbabel.org/wiki/Obprop
 props <- propOB(sdf)
 # (the result is a data frame with some basic properties calculated including
 # an InChI code and logP)
+is.data.frame(props)
 # check what we calculated
 colnames(props)
+#MR = molecular refractivity (a measure of polarizability)
+#nF = number of Fluorine atoms
+#more descriptors here: 
+#https://open-babel.readthedocs.io/en/latest/Descriptors/descriptors.html
 props$logP
 props$InChI
 
@@ -124,6 +146,14 @@ datablock(sdfset[[1]])
 #the data block is a vector of named entries, so each one can be accessed by its name, e.g. to get the glide docking score do:
 datablock(sdfset[[1]])["r_i_glide_gscore"]
 
+# we can access the info for each molecule just like we did before
+# for example, to get the ids, we need the Molecule_Name from the header
+header(sdfset[[1]])['Molecule_Name']
+# But the header function returns a list so we can't just do:
+# header(sdfset[1:5])['Molecule_Name']
+# instead you need to use something like sapply (see below)
+
+# Fortunately, ChemmineR has also functions that operate on the SDFs of an SDFset, e.g.
 # View the compound ids as stored in the Molecule Name field in the header of the sdf file - below we show the top 5 only (these were compounds from
 # KEGG so they all start with "C" and are followed by 5 numbers)
 sdfid(sdfset[1:5])
@@ -177,13 +207,15 @@ library(fmcsR)
 # http://www.openmolecules.org/name2structure.html )
 smi_query <- "C1C2C(CCC1)CCC3C2CCC4C3CCC4"
 # Remember: SMILES strings are valid SMARTS patterns
+# steroids will be a vector of 0 and 1, with the compound IDs as names
 steroids<- smartsSearchOB(sdfset,"C1C2C(CCC1)CCC3C2CCC4C3CCC4")
 # you should get back 6 hits
 table(steroids)
 # check which molecules were found to contain this skeleton
 which(steroids == 1)
 # plot the first three answers to check (print=FALSE stops the printing of the SDF containers on the screen so that only the 2D structures and their names are printed)
-plot(sdfset[which(steroids == 1)[1:3]], print=FALSE) 
+# first select the steroid scaffold-containing molecules and then select the first three molecules in that list
+plot(sdfset[which(steroids == 1)][1:3], print=FALSE) 
 
 # Now we will carry out a substructure search using fmcsR
 # For this, we need the query into sdf format
@@ -195,6 +227,8 @@ sdf_query <- smiles2sdf(smi_query)
 # the results to cases where the MCS is the same size as the query
 # (au=bu=0 means that the upper bound for atom and bond mismatches is zero)
 mcs_results <- fmcsBatch(sdf_query[1], sdfset, au=0, bu=0)
+# fmcsBatch returns a matrix with the following colnames
+colnames(mcs_results)
 # extract molecules where the MCS size is equal to the size of the query
 index<- which(mcs_results[,"MCS_Size"] ==17)
 hits <- sdfset[index]
@@ -204,11 +238,13 @@ plot(hits[1:4], regenCoords=TRUE, print=FALSE) # Plots structures to R graphics 
 
 # The R graphics representation of these compounds is not that great but hits
 # can be visualised instead on the online viewer of Chemmine using
-# the following command (which opens on a browser window). 
+# the following command (which opens on a browser window). If you don't want
+# to use the local browser (probably a good idea not to), copy and paste the
+# web link you will get into a locally-running browser on your desktop/laptop.
 
 sdf.visualize(hits)
 
-# Finally, we can extract the MCS from a pairwise comparison and visualise it; # we select here two compounds from the sdfset as the result looks better
+# Finally, we can extract the MCS (=maximum common substructure) from a pairwise comparison and visualise it; # we select here two compounds from the sdfset as the result looks better
 # the MCS will be coloured red in the molecular diagrams
 # You may need to resize the plotting window to see the structures better.
 plotMCS(fmcs(sdfset[[10]], sdfset[[100]], au=0, bu=0, matching.mode="aromatic")) 
@@ -225,7 +261,9 @@ fp2set <- fingerprintOB(sdfset, "FP2")
 # check the first two entries
 view(fp2set[1:2])
 # compare all ligands to the first one (and return only the top 4)
+# fpSim can take either FP or FPset of length one as input
 fpSim.out <- fpSim(fp2set[1], fp2set, method="Tanimoto", cutoff=0.4, top=4) 
+# the output is a vector with the compound ids as names
 fpSim.out
 # plot the results
 plot(sdfset[names(fpSim.out)], regenCoords=TRUE, print=FALSE)
@@ -238,7 +276,7 @@ simMA <- sapply(cid(fp2set), function(x) fpSim(x=fp2set[x], fp2set, sorted=FALSE
 # we can check the similarity value of any two compounds in the matrix
 simMA["CMP1", "CMP10"]
 # or plot the distribuion of all similarity values
-# first, reset the graphics device
+# first, reset the graphics device (you may not need to)
 dev.off()
 hist(simMA)
 # We can also use R's clustering functions on the dissimilarity matrix
