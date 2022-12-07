@@ -1,7 +1,7 @@
 
 Author: Irilenia Nobeli
 
-Date: 17/02/2021
+Date: 20/01/2022
 
 # Chemoinformatics with OpenBabel
 ## A short introduction to OpenBabel
@@ -35,7 +35,7 @@ Before using any program, try to find out as much as possible about it from the 
 We'll start by using the program babel to perform  __chemical file translations__. If you want to visualise the results you have various options. Here are a few:
 1. If you have a SMILES string you can use [Molview](http://molview.org) or [Molinspiration's Galaxy](http://molinspiration.com/cgi-bin/galaxy) structure generator facility.
 2. You can download (at home) the [CACTVS](http://www.xemistry.com/) toolkit and use the editor csed to view most of the available chemical data files (again no need for coordinates to be provided). This is possibly the most reliable editor that is available free to academics.
-3. Alternatively you can use the web sketcher available at: [Xemistry](http://85.214.192.197/edit/frame.html).
+3. Alternatively you can use the web sketcher available at: [Xemistry](https://xemistry.com//edit/frame.html).
 4. If you have 2D or 3D coordinates for your molecule, you can use __Chimera__ to view some of the more common chemical structure files.
 
 In this practical we will work with the phosphodiesterase 5 inhibitor __Viagra__. Create a file called viagra.smi (eg using an editor like nano, nedit or vi) and put in it the following SMILES string:
