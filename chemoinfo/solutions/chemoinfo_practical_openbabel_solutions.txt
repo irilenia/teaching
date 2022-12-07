@@ -1,5 +1,5 @@
 
-Birkbeck, MSc Bioinformatics with Systems BiologySpring 2019 
+Birkbeck, MSc Bioinformatics 
 Answers to chemoinformatics practical (openBabel)
 
 To reveal warnings run babel with:
@@ -12,6 +12,9 @@ want to produce an SDF formatted file as output):
 
 babel -ismi viagra.smi -osdf viagra.sdf -p 7.4 --title Viagra
 
+Explanation of the CHG line: First number defines the number of charges (up to 8 on a single line).
+Each charge consists of two 4-character fields. The first is the index of the atom, the second is the charge
+for that atom.
 
 Producing a 3D structure from sdf with no coordinates in it doesn't seem to work (at least when I tried it):
 obgen viagra.sdf > viagra3d.sdf
@@ -27,7 +30,7 @@ babel -p 7.4 -imol viagra3d.mol -osdf viagra3d.sdf
 
 
 To search an SDF formatted file with a SMARTS pattern (make sure the pattern is within quotes):
-obgrep 'C1C2C(CCC1)CCC3C2CCC4C3CCC4' 1equ_ligonly_edited.sdf > 1equ_steroids.sdf
+obgrep 'C1C2C(CCC1)CCC3C2CCC4C3CCC4' -isdf 1equ_ligonly_edited.sdf > 1equ_steroids.sdf
 
 (this particular pattern describes the steroid rings in the wikipedia page for “steroid” and returns
 6 hits back).
@@ -42,7 +45,8 @@ are using a different pattern)
 
 To split up the file of hits so that they can be visualised better in Chimera:
 babel -m -isdf 1equ_steroids.sdf -osdf 1equ_steroids
-
+You probably need to rename the output files so they have a .sdf ending (babel does not seem
+to always recognise the files, if they have no extension in their name).
 
 To calculate properties of the molecule in the SDF file: 
 obprop 1equ_ligonly_edited.sdf
